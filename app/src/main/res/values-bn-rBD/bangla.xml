@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AndroidTechnicalExercise</string>
+    <string name="btnGenerateImg">ইমেজ তৈরি করুন</string>
+    <string name="noconnectionmessage">ইন্টারনেট সংযোগ নেই</string>
+    <string name="waitmsg"> কিছুক্ষন অপেক্ষা করুণ </string>
+    <string name="click"> কনতুন ছবি দেখতে বাটনে ক্লিক করুন </string>
+
+</resources>

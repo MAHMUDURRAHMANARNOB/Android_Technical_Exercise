@@ -5,6 +5,8 @@ import androidx.collection.LruCache;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -39,14 +41,44 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button GenerateImageBtn;
+    Button GenerateImageBtn, BanglaBtn, EnglishBtn;
     ImageView RandomImageView;
+    Context context;
+    Resources resources;
+
+    String NetworkErrorMSG, Wait,Click;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BanglaBtn = findViewById(R.id.btnbn);
+        EnglishBtn = findViewById(R.id.btnEn);
+
+        EnglishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context = LocalHelper.setLocale(MainActivity.this, "en");
+                resources = context.getResources();
+                GenerateImageBtn.setText(resources.getString(R.string.btnGenerateImg));
+                NetworkErrorMSG = resources.getString(R.string.noconnectionmessage);
+                Wait = resources.getString(R.string.waitmsg);
+                Click = resources.getString(R.string.click);
+            }
+        });
+        BanglaBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context = LocalHelper.setLocale(MainActivity.this, "bn");
+                resources = context.getResources();
+                GenerateImageBtn.setText(resources.getString(R.string.btnGenerateImg));
+                NetworkErrorMSG = resources.getString(R.string.noconnectionmessage);
+                Wait = resources.getString(R.string.waitmsg);
+                Click = resources.getString(R.string.click);
+            }
+        });
 
         GenerateImageBtn = (Button) findViewById(R.id.btnGeneratePicture);
         RandomImageView = (ImageView) findViewById(R.id.imgRandomImage);
@@ -57,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             GeneratedImage(imageUrl);
         } else {
             // No URL saved in SharedPreferences, load the default image
-            Toast.makeText(MainActivity.this, "Click the button to see new pictures", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, Click, Toast.LENGTH_SHORT).show();
 
         }
         GenerateImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
                     final int randomNum1 = new Random().nextInt(500) + 200; // [0, 60] + 20 => [20, 80]
                     final int randomNum2 = new Random().nextInt(600) + 100;
                     GeneratedImage(String.valueOf(randomNum1),String.valueOf(randomNum2));
-                    Toast.makeText(MainActivity.this, "Wait a Bit", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, Wait, Toast.LENGTH_SHORT).show();
 
                 }
                 else{
-                    Toast.makeText(MainActivity.this, "No network connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, NetworkErrorMSG, Toast.LENGTH_SHORT).show();
                 }
 
             }

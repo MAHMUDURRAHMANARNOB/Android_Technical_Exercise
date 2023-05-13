@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AndroidTechnicalExercise</string>
+    <string name="btnGenerateImg">Generate Image</string>
+    <string name="noconnectionmessage">No network connection</string>
+    <string name="waitmsg"> Wait a Bit </string>
+    <string name="click"> Click the button to see new pictures </string>
+
 </resources>
