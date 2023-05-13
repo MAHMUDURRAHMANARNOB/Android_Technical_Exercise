@@ -63,9 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 context = LocalHelper.setLocale(MainActivity.this, "en");
                 resources = context.getResources();
                 GenerateImageBtn.setText(resources.getString(R.string.btnGenerateImg));
-                NetworkErrorMSG = resources.getString(R.string.noconnectionmessage);
-                Wait = resources.getString(R.string.waitmsg);
-                Click = resources.getString(R.string.click);
             }
         });
         BanglaBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,9 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 context = LocalHelper.setLocale(MainActivity.this, "bn");
                 resources = context.getResources();
                 GenerateImageBtn.setText(resources.getString(R.string.btnGenerateImg));
-                NetworkErrorMSG = resources.getString(R.string.noconnectionmessage);
-                Wait = resources.getString(R.string.waitmsg);
-                Click = resources.getString(R.string.click);
             }
         });
 
@@ -85,26 +79,28 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         String imageUrl = prefs.getString("image_url", null);
         if (imageUrl != null) {
-            // Load the image using the URL
+
             GeneratedImage(imageUrl);
         } else {
-            // No URL saved in SharedPreferences, load the default image
-            Toast.makeText(MainActivity.this, Click, Toast.LENGTH_SHORT).show();
+
+            String click_msg = resources.getString(R.string.click);
+            Toast.makeText(MainActivity.this, click_msg , Toast.LENGTH_SHORT).show();
 
         }
         GenerateImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isNetworkAvailable()) {
-                     // [0, 60] + 20 => [20, 80]
-                    final int randomNum1 = new Random().nextInt(500) + 200; // [0, 60] + 20 => [20, 80]
+                    final int randomNum1 = new Random().nextInt(500) + 200;
                     final int randomNum2 = new Random().nextInt(600) + 100;
                     GeneratedImage(String.valueOf(randomNum1),String.valueOf(randomNum2));
-                    Toast.makeText(MainActivity.this, Wait, Toast.LENGTH_SHORT).show();
+                    String wait_msg = resources.getString(R.string.waitmsg);
+                    Toast.makeText(MainActivity.this, wait_msg , Toast.LENGTH_SHORT).show();
 
                 }
                 else{
-                    Toast.makeText(MainActivity.this, NetworkErrorMSG, Toast.LENGTH_SHORT).show();
+                    String noConn = resources.getString(R.string.noconnectionmessage);
+                    Toast.makeText(MainActivity.this, noConn , Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -115,13 +111,11 @@ public class MainActivity extends AppCompatActivity {
     public void GeneratedImage(String url){
         String urlBuilder = url;
 
-        // Set up the cache
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
         RequestQueue requestQueue = new RequestQueue(cache, network);
         requestQueue.start();
 
-        // Set up the ImageLoader with the same RequestQueue
         ImageLoader imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache() {
             private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);
 
@@ -140,13 +134,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 if (response.getBitmap() != null) {
-                    // Image loaded from cache or network
                     RandomImageView.setImageBitmap(response.getBitmap());
                 }
             }
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Handle error
+
                 Toast.makeText(MainActivity.this, "No Image connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -156,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
         String urlBuilder = "https://picsum.photos/"+a+"/"+b;;
 
-        // Set up the cache
+
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
         RequestQueue requestQueue = new RequestQueue(cache, network);
@@ -184,14 +177,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 if (response.getBitmap() != null) {
-                    // Image loaded from cache or network
+
                     RandomImageView.setImageBitmap(response.getBitmap());
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Handle error
+
                 Toast.makeText(MainActivity.this, "No Image connection", Toast.LENGTH_SHORT).show();
             }
         });
