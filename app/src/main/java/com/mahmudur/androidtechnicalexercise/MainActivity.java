@@ -41,12 +41,12 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button GenerateImageBtn, BanglaBtn, EnglishBtn;
+    Button GenerateImageBtn, BanglaBtn, EnglishBtn, ErrorText;
     ImageView RandomImageView;
     Context context;
-    Resources resources;
 
-    String NetworkErrorMSG, Wait,Click;
+    String ErrorbtnTxt;
+    Resources resources;
 
 
     @Override
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 context = LocalHelper.setLocale(MainActivity.this, "en");
                 resources = context.getResources();
                 GenerateImageBtn.setText(resources.getString(R.string.btnGenerateImg));
+                ErrorText.setText(resources.getString(R.string.noconnectionmessage));
             }
         });
         BanglaBtn.setOnClickListener(new View.OnClickListener() {
@@ -71,11 +72,13 @@ public class MainActivity extends AppCompatActivity {
                 context = LocalHelper.setLocale(MainActivity.this, "bn");
                 resources = context.getResources();
                 GenerateImageBtn.setText(resources.getString(R.string.btnGenerateImg));
+                ErrorText.setText(resources.getString(R.string.noconnectionmessage));
             }
         });
 
         GenerateImageBtn = (Button) findViewById(R.id.btnGeneratePicture);
         RandomImageView = (ImageView) findViewById(R.id.imgRandomImage);
+        ErrorText = (Button) findViewById(R.id.ErrorText);
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         String imageUrl = prefs.getString("image_url", null);
         if (imageUrl != null) {
@@ -83,8 +86,7 @@ public class MainActivity extends AppCompatActivity {
             GeneratedImage(imageUrl);
         } else {
 
-            String click_msg = resources.getString(R.string.click);
-            Toast.makeText(MainActivity.this, click_msg , Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, " Click the button to see new pictures ", Toast.LENGTH_SHORT).show();
 
         }
         GenerateImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -94,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
                     final int randomNum1 = new Random().nextInt(500) + 200;
                     final int randomNum2 = new Random().nextInt(600) + 100;
                     GeneratedImage(String.valueOf(randomNum1),String.valueOf(randomNum2));
-                    String wait_msg = resources.getString(R.string.waitmsg);
-                    Toast.makeText(MainActivity.this, wait_msg , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, " Wait a bit ", Toast.LENGTH_SHORT).show();
+                    ErrorText.setVisibility(View.GONE);
 
                 }
                 else{
-                    String noConn = resources.getString(R.string.noconnectionmessage);
-                    Toast.makeText(MainActivity.this, noConn , Toast.LENGTH_SHORT).show();
+                    ErrorText.setVisibility(View.VISIBLE);
+//                    ErrorText.setText(resources.getString(R.string.noconnectionmessage));
                 }
 
             }
